@@ -193,13 +193,17 @@ Directory.prototype.close = function () {
 };
 
 Directory.prototype.changed = function () {
-	console.log('changed', this);
+	//console.log('changed', this);
+
+	new Notification({message: this.name + ' changed'}).render();
 
 	return this;
 };
 
 Directory.prototype.removed = function () {
-	console.log('removed', this);
+	//console.log('removed', this);
+
+	new Notification({message: this.name + ' removed'}).render();
 
 	return this.remove();
 };

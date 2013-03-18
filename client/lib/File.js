@@ -201,11 +201,13 @@ File.prototype.scrollTo = function () {
 
 	this.editor_dom.parentNode.scrollTop = this.editor_dom.offsetTop;
 
+	this.editor.focus();
+
 	return this;
 };
 
 File.prototype.changed = function () {
-	console.log('changed', this);
+	//console.log('changed', this);
 
 	if (this.is_open) {
 		var that = this;
@@ -231,7 +233,9 @@ File.prototype.changed = function () {
 };
 
 File.prototype.removed = function () {
-	console.log('removed', this);
+	//console.log('removed', this);
+
+	new Notification({message: this.name + ' removed'}).render();
 
 	return this.remove();
 };

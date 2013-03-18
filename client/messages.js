@@ -11,11 +11,12 @@ module.exports = function (app) {
 	app.socket.on('list files', function (files) {
 		var existed = !!app.directory;
 
-		if (existed) app.directory.remove();
+		if (existed) return;
+		//if (existed) app.directory.remove();
 
 		app.directory = Directory.createFromList(files, app).render();
 
-		if (!existed) app.emit('directory ready');
+		//if (!existed) app.emit('directory ready');
 	});
 
 	function onceDirectoryReady (callback) {
