@@ -1,7 +1,9 @@
 "use strict";
 
 
-var Directory = require('./lib/Directory'),
+var Notification = require('./lib/Notification'),
+    Directory = require('./lib/Directory'),
+    Dialog = require('./lib/Dialog'),
     File = require('./lib/File');
 
 
@@ -70,5 +72,14 @@ module.exports = function (app) {
 
 	app.socket.on('write file error', function (name, error) {
 		app.error('file', name, error);
+
+		new Dialog({
+			close: true,
+			header: 'Error while saving ' + name,
+			content: error,
+			buttons: [
+				{name: 'OK', action: 'close'}
+			]
+		}).render();
 	});
 };

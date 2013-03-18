@@ -10,6 +10,11 @@ module.exports = function (app) {
 	}, 500);
 
 
+	//window.onbeforeunload = function (event) {
+		//return 'Are you sure you want to exit this session?';
+	//};
+
+
 	setTimeout(resize, 50);
 
 	window.onresize = resize;
@@ -54,6 +59,16 @@ module.exports = function (app) {
 	};
 
 
+	app.resize_files_dom.ondblclick = function () {
+		if (app.files_width >= 50) {
+			app.files_width = 0;
+		} else {
+			app.files_width = Math.max(100, Math.min(200, Math.floor(innerWidth * 0.2)));
+		}
+
+		resize();
+	};
+
 	app.resize_files_dom.onmousedown = function (down) {
 		document.body.classList.add('resize-files');
 
@@ -75,9 +90,9 @@ module.exports = function (app) {
 
 		function mousemove (move) {
 			if (pending) return;
-	
+
 			pending = true;
-	
+
 			requestAnimationFrame(function () {
 				var diffX = move.pageX - last.pageX;
 

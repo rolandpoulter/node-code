@@ -20,7 +20,7 @@ Directory.createFromList = function (files, app) {
 };
 
 
-require('./helpers').mixinDomStore(Directory, 'dirs');
+require('./helpers').mixinStore(Directory, 'dirs');
 
 
 function Directory (name, parent, app) {

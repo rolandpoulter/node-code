@@ -1,16 +1,5 @@
-exports.cleanName = function (name) {
-	return name.replace(/[^A-Za-z0-9]/, '_');
-};
-
-exports.$ = function (name) {
-	return window.$('#' + exports.cleanName(name));
-};
-
-exports.mixinDomStore = function (ctor, store_name) {
+exports.mixinStore = function (ctor, store_name) {
 	store_name += '_store';
-
-	ctor.cleanName = exports.cleanName;
-	ctor.$ = exports.$
 
 	ctor.get = function (name, object) {
 		object = object || ctor;

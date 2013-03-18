@@ -12,7 +12,7 @@ var path_sep = '/';
 module.exports = File;
 
 
-require('./helpers').mixinDomStore(File);
+require('./helpers').mixinStore(File);
 
 
 File.ext_map = {
@@ -24,8 +24,29 @@ File.ext_map = {
 };
 
 
+File.detectCurrent = function (app) {
+	var location = app.editors_dom.scrollTop,
+	    children = Array.prototype.slice.call(app.editors_dom.childNodes),
+	    current = document.querySelector('a.current');
+
+	if (!current) children.forEach(function (child) {
+		if (current) return;
+
+		var top = child.offsetTop,
+		    bottom = top + child.offsetHeight;
+
+		if (location >= top && location < bottom) current = child;
+	});
+
+	if (current) {
+		current = current.object;
+	}
+
+	return current;
+};
+
+
 function File (name, parent, app) {
-	this.id = File.cleanName(name);
 	this.app = app;
 	this.ext = (function (list) {return list[list.length - 1];})(name.split('.'));
 	this.base = name.split(path_sep).pop();
@@ -43,16 +64,13 @@ File.prototype.render = function () {
 	this.editor_dom = document.createElement('div');
 
 	this.file_dom.object =
-	this.open_dom.object = this;
-
-	this.file_dom.id = this.id;
+	this.open_dom.object =
+	this.editor_dom.object = this;
 
 	this.file_dom.classList.add('file');
 
 	this.file_dom.innerHTML = this.base;
 	this.open_dom.innerHTML = this.name + '<span class="close">&#x2715;</span>';
-
-	this.editor_dom.id = 'editor_' + this.id;
 
 	if (this.parent && this.parent.tree_dom) {
 		this.parent.tree_dom.appendChild(this.file_dom);
@@ -90,12 +108,16 @@ File.prototype.saved = function () {
 	this.file_dom.classList.remove('saving');
 	this.open_dom.classList.remove('saving');
 
+	new Notification({message: this.name + ' saved'}).render();
+
 	return this;
 };
 
 File.prototype.read = function (data) {
 	this.editor.setValue(data);
 	this.editor.clearSelection();
+
+	new Notification({message: this.name + ' loaded'}).render();
 
 	return this;
 };
@@ -106,6 +128,12 @@ File.prototype.select = function () {
 	return this;
 };
 
+File.prototype.revert = function () {
+	this.app.socket.emit('read file', this.name);
+
+	return this;
+}
+
 File.prototype.open = function () {
 	if (!this.is_open) {
 		this.is_open = true;
@@ -113,7 +141,7 @@ File.prototype.open = function () {
 		this.file_dom.classList.add('open');
 		this.open_dom.classList.add('open');
 
-		this.app.socket.emit('read file', this.name);
+		this.revert()
 
 		if (this.editor) {
 			this.editor_dom.style.display = 'block';
@@ -122,7 +150,7 @@ File.prototype.open = function () {
 			this.editor_dom.style.width =
 			this.editor_dom.style.height = '100%';
 
-			this.editor = ace.edit(this.editor_dom.id);
+			this.editor = ace.edit(this.editor_dom);
 
 			this.editor.setTheme("ace/theme/monokai");
 
@@ -152,6 +180,10 @@ File.prototype.close = function () {
 		delete this.is_open;
 
 		this.app.socket.emit('close', this.name);
+
+		var current = File.detectCurrent(this.app);
+
+		if (current) current.open();
 	}
 
 	return this;
@@ -174,6 +206,26 @@ File.prototype.scrollTo = function () {
 
 File.prototype.changed = function () {
 	console.log('changed', this);
+
+	if (this.is_open) {
+		var that = this;
+
+		new Dialog({
+			modal: true,
+			header: 'Revert file changes?',
+			content: this.name + ' was changed while editing. Do you want to revert changes?',
+			buttons: [
+				{name: 'Revert', action: function (e, close) {
+					that.revert();
+					close();
+				}},
+				{name: 'Cancel', action: 'close'}
+			]
+		}).render();
+
+	} else {
+		new Notification({message: this.name + ' changed'}).render();
+	}
 
 	return this;
 };
