@@ -181,6 +181,8 @@ File.prototype.scrollTo = function () {
 
 	this.focusEditor();
 
+	File.current = this;
+
 	return this;
 };
 

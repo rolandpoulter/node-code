@@ -1,6 +1,9 @@
 "use strict";
 
 
+var File = require('./lib/File');
+
+
 module.exports = function (app) {
 	if (!app.opened_dom.toggleHandler) {
 		app.opened_dom.toggleHandler = function (e) {
@@ -14,4 +17,23 @@ module.exports = function (app) {
 
 		app.opened_dom.addEventListener('click', app.opened_dom.toggleHandler);
 	}
+
+	Mousetrap.bindGlobal('alt+w', function(e) {
+		if (File.current) File.current.close();
+		return false;
+	});
+
+	Mousetrap.bindGlobal(['command+[', 'ctrl+['], function(e) {
+		if (File.current) {
+			// TODO:
+		}
+		return false;
+	});
+
+	Mousetrap.bindGlobal(['command+]', 'ctrl+]'], function(e) {
+		if (File.current) {
+			// TODO:
+		}
+		return false;
+	});
 };
