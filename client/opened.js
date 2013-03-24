@@ -18,6 +18,8 @@ module.exports = function (app) {
 		app.opened_dom.addEventListener('click', app.opened_dom.toggleHandler);
 	}
 
+	return;
+
 	Mousetrap.bindGlobal('alt+w', function(e) {
 		if (File.current) File.current.close();
 		return false;

@@ -21,8 +21,8 @@ function Editable (item, dom_key) {
 
 	Object.keys(Editable.prototype).forEach(function (method) {
 		item[method] = function () {
-			editable[method].apply(editable, arguments);
-			return item;
+			var result = editable[method].apply(editable, arguments);
+			return result === editable ? item : result;
 		};
 	});
 }

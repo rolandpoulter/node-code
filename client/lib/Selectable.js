@@ -13,8 +13,8 @@ function Selectable (item, dom_key, parent_node) {
 
 	['shiftSelect', 'controlSelect', 'onlySelect'].forEach(function (method) {
 		item[method] = function () {
-			selectable[method].apply(selectable, arguments);
-			return item;
+			var result = selectable[method].apply(selectable, arguments);
+			return result === selectable ? item : result;
 		};
 	});
 }

@@ -80,7 +80,7 @@ File.prototype.render = function () {
 	return this;
 };
 
-File.prototype.save = function () {
+File.prototype.save = function () {debugger;
 	if (this.saving) {
 		clearTimeout(this.save_timer);
 		this.save_timer = setTimeout(this.save.bind(this), 250);
@@ -98,7 +98,7 @@ File.prototype.save = function () {
 	return this;
 };
 
-File.prototype.saved = function () {
+File.prototype.saved = function () {debugger;
 	delete this.saving;
 
 	this.file_dom.classList.remove('saving');
