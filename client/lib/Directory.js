@@ -3,6 +3,7 @@
 
 var Notification = require('./Notification'),
     ContextMenu = require('./ContextMenu'),
+    Selectable = require('./Selectable'),
     Dialog = require('./Dialog');
 
 
@@ -31,13 +32,15 @@ function Directory (name, parent, app) {
 	this.parent = parent;
 	this.children = {};
 
+	new Selectable(this, 'file_dom', app.files_dom);
+
 	return Directory.set(this, name, app);
 }
 
 
 Directory.prototype.render = function () {
 	this.tree_dom = document.createElement('div')
-	this.tree_dom.object = this;
+	this.tree_dom.js_object = this;
 
 	this.tree_dom.classList.add('tree');
 
@@ -53,7 +56,7 @@ Directory.prototype.render = function () {
 
 	if (this.name) {
 		this.file_dom = document.createElement('a');
-		this.file_dom.object = this;
+		this.file_dom.js_object = this;
 
 		this.file_dom.classList.add('directory');
 		this.file_dom.innerHTML = this.base;
@@ -164,20 +167,20 @@ Directory.prototype.createFile = function (name, parent, app) {
 	return file;
 };
 
+Directory.prototype.select = function () {
+	return this;
+};
+
+Directory.prototype.unselect = function () {
+	return this;
+};
+
 Directory.prototype.openFileList = function (list) {
 	var app = this.app;
 
 	list.forEach(function (name) {
 		File.get(name, app).open();
 	});
-
-	return this;
-};
-
-Directory.prototype.select = function () {
-	if (this.file_dom) {
-		this.file_dom.classList.toggle('selected');
-	}
 
 	return this;
 };

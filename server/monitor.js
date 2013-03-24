@@ -36,12 +36,16 @@ module.exports = function (app) {
 	
 				} else if (stat.isDirectory()) {
 					scope[last] = {};
+					finish();
 	
 				} else {
 					scope[last] = null;
+					finish();
 				}
 
-				if (callback) callback(scope[last]);
+				function finish () {
+					if (callback) callback(scope[last]);
+				}
 			}
 		}
 

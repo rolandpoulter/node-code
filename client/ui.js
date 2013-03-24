@@ -53,8 +53,8 @@ module.exports = function (app) {
 
 		var current = document.querySelector('a.current');
 
-		if (current && current.object) {
-			current.object.scrollTo();
+		if (current && current.js_object) {
+			current.js_object.scrollTo();
 		}
 	};
 

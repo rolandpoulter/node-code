@@ -49,6 +49,7 @@ Dialog.prototype.render = function (parent) {
 
 			var button_dom = that.buttons[button.name] = document.createElement('button');
 
+			button_dom.className = button.classes;
 			button_dom.innerHTML = button.content || button.name;
 			button_dom.onclick = button.action === 'close' ?
 				close :
@@ -70,7 +71,9 @@ Dialog.prototype.render = function (parent) {
 
 	parent.appendChild(this.container_dom);
 
-	return this;
+	window.addEventListener('resize', this.resizeHandler = this.center.bind(this));
+
+	return this.center();
 };
 
 Dialog.prototype.remove = function () {
@@ -80,5 +83,19 @@ Dialog.prototype.remove = function () {
 
 	this.container_dom.parentNode.removeChild(this.container_dom);
 
+	window.removeEventListener('resize', this.resizeHandler);
+
+	return this;
+};
+
+Dialog.prototype.center = function () {
+	var cdom = this.container_dom,
+	    width = cdom.offsetWidth,
+	    height = cdom.offsetHeight,
+	    style = cdom.style;
+
+	style.left = Math.max(0, (innerWidth / 2 - (width / 2))) + 'px';
+	style.top = Math.max(0, (innerHeight / 2 - (height))) + 'px';
+ 
 	return this;
 };

@@ -3,6 +3,8 @@
 
 var Notification = require('./Notification'),
     ContextMenu = require('./ContextMenu'),
+    Selectable = require('./Selectable'),
+    Editable = require('./Editable'),
     Dialog = require('./Dialog');
 
 
@@ -13,15 +15,6 @@ module.exports = File;
 
 
 require('./helpers').mixinStore(File);
-
-
-File.ext_map = {
-	'md': 'ace/mode/markdown',
-	'js': 'ace/mode/javascript',
-	'json': 'ace/mode/json',
-	'html': 'ace/mode/html',
-	'css': 'ace/mode/css'
-};
 
 
 File.detectCurrent = function (app) {
@@ -53,6 +46,9 @@ function File (name, parent, app) {
 	this.name = name;
 	this.parent = parent;
 
+	new Selectable(this, 'file_dom', app.files_dom);
+	new Editable(this, 'editor_dom');
+
 	return File.set(this, name, app);
 }
 
@@ -63,9 +59,9 @@ File.prototype.render = function () {
 
 	this.editor_dom = document.createElement('div');
 
-	this.file_dom.object =
-	this.open_dom.object =
-	this.editor_dom.object = this;
+	this.file_dom.js_object =
+	this.open_dom.js_object =
+	this.editor_dom.js_object = this;
 
 	this.file_dom.classList.add('file');
 
@@ -97,7 +93,7 @@ File.prototype.save = function () {
 	this.file_dom.classList.add('saving');
 	this.open_dom.classList.add('saving');
 
-	this.app.socket.emit('write file', this.name, this.editor.getValue());
+	this.app.socket.emit('write file', this.name, this.getEditorValue());
 
 	return this;
 };
@@ -114,8 +110,7 @@ File.prototype.saved = function () {
 };
 
 File.prototype.read = function (data) {
-	this.editor.setValue(data);
-	this.editor.clearSelection();
+	this.setEditorValue(data)
 
 	new Notification({message: this.name + ' loaded'}).render();
 
@@ -123,8 +118,10 @@ File.prototype.read = function (data) {
 };
 
 File.prototype.select = function () {
-	this.file_dom.classList.toggle('selected');
+	return this;
+};
 
+File.prototype.unselect = function () {
 	return this;
 };
 
@@ -141,30 +138,9 @@ File.prototype.open = function () {
 		this.file_dom.classList.add('open');
 		this.open_dom.classList.add('open');
 
-		this.revert()
+		this.revert();
 
-		if (this.editor) {
-			this.editor_dom.style.display = 'block';
-
-		} else {
-			this.editor_dom.style.width =
-			this.editor_dom.style.height = '100%';
-
-			this.editor = ace.edit(this.editor_dom);
-
-			this.editor.setTheme("ace/theme/monokai");
-
-			this.editor_session = this.editor.getSession();
-
-			this.editor_session.setMode(File.ext_map[this.ext] || 'ace/mode/text');
-
-			this.editor.commands.addCommand({
-				name: 'save',
-				bindKey: {win: 'Ctrl-S',  mac: 'Command-S'},
-				exec: this.save.bind(this),
-				readOnly: true
-			});
-		}
+		this.showEditor();
 	}
 
 	return this.scrollTo();
@@ -172,7 +148,7 @@ File.prototype.open = function () {
 
 File.prototype.close = function () {
 	if (this.is_open) {
-		this.editor_dom.style.display = 'none';
+		this.hideEditor();
 	
 		this.file_dom.classList.remove('open', 'current');
 		this.open_dom.classList.remove('open', 'current');
@@ -190,7 +166,9 @@ File.prototype.close = function () {
 };
 
 File.prototype.scrollTo = function () {
-	var current_list = Array.prototype.slice.call(document.querySelectorAll('a.current'));
+	var current_list = Array.prototype.slice.call(
+		document.querySelectorAll('a.current')
+	);
 
 	current_list.forEach(function (current) {
 		current.classList.remove('current');
@@ -201,7 +179,7 @@ File.prototype.scrollTo = function () {
 
 	this.editor_dom.parentNode.scrollTop = this.editor_dom.offsetTop;
 
-	this.editor.focus();
+	this.focusEditor();
 
 	return this;
 };
@@ -243,9 +221,7 @@ File.prototype.removed = function () {
 File.prototype.remove = function () {
 	File.set(undefined, this.name, this.app);
 
-	if (this.editor) {
-		this.editor.destroy();
-	}
+	this.destroyEditor();
 
 	this.file_dom.parentNode.removeChild(this.file_dom);
 	this.open_dom.parentNode.removeChild(this.open_dom);

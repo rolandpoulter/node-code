@@ -138,6 +138,23 @@ body.resize-files * {
 .dialog {
 	background: white;
 	position: absolute;
+	border-radius: 5px;
+}
+
+.dialog .header {
+	padding: 5px;
+}
+
+.dialog .content {
+	padding: 5px;
+}
+
+.dialog .footer {
+	padding: 5px;
+	text-align: right;
+}
+
+.dialog .footer button {
 }
 
 .tree {
