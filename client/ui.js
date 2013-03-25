@@ -70,10 +70,10 @@ module.exports = function (app) {
 	};
 
 	app.resize_files_dom.onmousedown = function (down) {
-		document.body.classList.add('resize-files');
+		document.body.classList.add('col-resize');
 
 		function mouseup (up) {
-			document.body.classList.remove('resize-files')
+			document.body.classList.remove('col-resize')
 
 			window.removeEventListener('mouseup', mouseup);
 			window.removeEventListener('mousemove', mousemove);

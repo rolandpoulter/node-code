@@ -31,6 +31,11 @@ function Editable (item, dom_key) {
 Editable.prototype.destroyEditor = function () {
 	if (this.editor) {
 		this.editor.destroy();
+
+		delete this.editor;
+
+		this.item[this.dom_key].className = 'editor';
+		this.item[this.dom_key].innerHTML = '';
 	}
 
 	return this;
@@ -56,7 +61,7 @@ Editable.prototype.createEditor = function () {
 		readOnly: true
 	});
 
-	return this.showEditor();
+	return this;
 };
 
 Editable.prototype.setEditorValue = function (data) {
@@ -70,36 +75,6 @@ Editable.prototype.setEditorValue = function (data) {
 
 Editable.prototype.getEditorValue = function () {
 	return this.editor.getValue();
-};
-
-Editable.prototype.toggleEditor = function () {
-	if (this.item[this.dom_key] && this.item[this.dom_key].classList.contains('open')) {
-		this.hideEditor();
-
-	} else {
-		this.showEditor();
-	}
-
-	return this;
-};
-
-Editable.prototype.showEditor = function () {
-	if (!this.editor) {
-		this.createEditor();
-
-	} else if (this.item[this.dom_key]) {
-		this.item[this.dom_key].classList.add('open')
-	}
-
-	return this;
-};
-
-Editable.prototype.hideEditor = function () {
-	if (this.item[this.dom_key]) {
-		this.item[this.dom_key].classList.remove('open');
-	}
-
-	return this;
 };
 
 Editable.prototype.focusEditor = function () {

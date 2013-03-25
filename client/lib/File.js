@@ -111,6 +111,7 @@ File.prototype.saved = function () {
 };
 
 File.prototype.read = function (data) {
+	this.data = data;
 	this.setEditorValue(data)
 
 	new Notification({message: this.name + ' loaded'}).render();
@@ -141,24 +142,51 @@ File.prototype.open = function () {
 
 		this.revert();
 
-		this.showEditor();
+		this.createEditor();
 	}
 
 	return this.current();
 };
 
 File.prototype.close = function () {
+	var file = this;
+
 	if (this.is_open) {
-		this.hideEditor();
-	
-		this.file_dom.classList.remove('open');
-		this.open_dom.classList.remove('open');
-	
-		delete this.is_open;
+		if (this.data !== this.getEditorValue()) {
+			new Dialog({
+				modal: true,
+				header: 'Close file with unsaved changes?',
+				content: this.name + ' has unsaved changes. Do you want to close without saving?',
+				buttons: [
+					{name: 'Close', action: function (e, close) {
+						doClose();
+						close();
+					}},
+					{name: 'Save and Close', action: function (e, close) {
+						// TODO: make sure the file was saved and then close
+						file.save();
+						doClose();
+						close();
+					}},
+					{name: 'Cancel', action: 'close'}
+				]
+			}).render();
+		} else {
+			doClose();
+		}
+	}
 
-		this.app.socket.emit('close', this.name);
+	function doClose () {
+		file.destroyEditor();
+	
+		file.file_dom.classList.remove('open');
+		file.open_dom.classList.remove('open');
+	
+		delete file.is_open;
 
-		this.uncurrent();
+		file.app.socket.emit('close', file.name);
+
+		file.uncurrent();
 	}
 
 	return this;
@@ -194,8 +222,11 @@ File.prototype.uncurrent = function () {
 	if (File.current === this) {
 		File.current = File.detectCurrent(this.app);
 
-		if (File.current) {
+		if (File.current !== this) {
 			File.current.open();
+
+		} else {
+			File.current = null;
 		}
 	}
 

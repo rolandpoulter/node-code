@@ -20,27 +20,47 @@ module.exports = function (app) {
 
 			else getStat(name, finish);
 
-			function finish (error, stat) {
+			// TODO: use dont ignore to allow opening of ignored directories
+			function finish (error, stat, dont_ignore) {
 				if (error) throw error;
 
+				function ignore_check (name) {
+					// TODO: use a config file to determine directory names to ignore
+					return !dont_ignore && (name.charAt(0) === '.' || name === 'node_modules');
+				}
+
 				var relative = getRelativeSplit(name),
+				    ignore = false,
 				    scope = app.files,
 				    last = relative.pop();
 	
 				relative.forEach(function (segment) {
+					if (!dont_ignore && ignore) return;
+
 					scope = scope[segment] = scope[segment] || {};
+
+					if (ignore_check(segment)) {
+						scope[segment] = 0;
+						ignore = true;
+					}
+
+					if (typeof dont_ignore !== 'number' && dont_ignore) {
+						dont_ignore -= 1;
+					}
 				});
-	
-				if (stat.isFile()) {
-					scope[last] = getRelative(name);
-	
-				} else if (stat.isDirectory()) {
-					scope[last] = {};
-					finish();
-	
-				} else {
-					scope[last] = null;
-					finish();
+
+				if (!ignore) {
+					if (stat.isFile()) {
+						scope[last] = getRelative(name);
+
+					} else if (stat.isDirectory()) {
+						scope[last] = ignore_check(last) ? 0 : {};
+						finish();
+
+					} else {
+						scope[last] = null;
+						finish();
+					}
 				}
 
 				function finish () {

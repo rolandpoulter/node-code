@@ -103,6 +103,10 @@ Directory.prototype.createFromList = function (list, app) {
 	name.pop();
 	name = name.join(path_sep);
 
+	if (typeof list !== 'object') {
+		return this;
+	}
+
 	Object.keys(list).sort(function (a, b) {
 		if (a > b) return 1;
 		if (b > a) return -1;
@@ -111,10 +115,12 @@ Directory.prototype.createFromList = function (list, app) {
 	}).forEach(function (key) {
 		if (!key) return;
 
-		if (typeof list[key] === 'string') {
+		var type = typeof list[key];
+
+		if (type === 'string') {
 			parent.createFile(list[key], parent, app);
 
-		} else {
+		} else if (type === 'object' && list[key])  {
 			var fullname = (name ? name + path_sep : '') + key,
 			    directory = parent.createDirectory(fullname, parent, app);
 

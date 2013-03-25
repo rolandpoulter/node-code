@@ -19,6 +19,8 @@ app.status_dom = $('#status');
 app.files_dom = $('#files');
 
 app.resize_files_dom = $('#resize-files');
+app.resize_opened_dom = $('#resize-opened');
+app.resize_status_dom = $('#resize-status');
 
 
 window.$ = app.$ = $;
