@@ -56,12 +56,14 @@ Editable.prototype.createEditor = function () {
 		readOnly: true
 	});
 
-	return this;
+	return this.showEditor();
 };
 
 Editable.prototype.setEditorValue = function (data) {
 	this.editor.setValue(data);
 	this.editor.clearSelection();
+
+	this.editor_session.getUndoManager().reset();
 
 	return this;
 };
@@ -71,7 +73,7 @@ Editable.prototype.getEditorValue = function () {
 };
 
 Editable.prototype.toggleEditor = function () {
-	if (this.item[this.dom_key] && this.item[this.dom_key].style.display !== 'none') {
+	if (this.item[this.dom_key] && this.item[this.dom_key].classList.contains('open')) {
 		this.hideEditor();
 
 	} else {
@@ -86,15 +88,15 @@ Editable.prototype.showEditor = function () {
 		this.createEditor();
 
 	} else if (this.item[this.dom_key]) {
-		this.item[this.dom_key].style.display = 'block';
+		this.item[this.dom_key].classList.add('open')
 	}
 
-	return this.editor;
+	return this;
 };
 
 Editable.prototype.hideEditor = function () {
 	if (this.item[this.dom_key]) {
-		this.item[this.dom_key].style.display = 'none';
+		this.item[this.dom_key].classList.remove('open');
 	}
 
 	return this;

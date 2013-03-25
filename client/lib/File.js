@@ -32,7 +32,7 @@ File.detectCurrent = function (app) {
 	});
 
 	if (current) {
-		current = current.object;
+		current = current.js_object;
 	}
 
 	return current;
@@ -64,7 +64,7 @@ File.prototype.render = function () {
 	this.editor_dom.js_object = this;
 
 	this.file_dom.classList.add('file');
-	this.file_dom.classList.add('editor');
+	this.editor_dom.classList.add('editor');
 
 	this.file_dom.innerHTML = this.base;
 	this.open_dom.innerHTML = this.name + '<span class="close">&#x2715;</span>';
@@ -81,7 +81,7 @@ File.prototype.render = function () {
 	return this;
 };
 
-File.prototype.save = function () {debugger;
+File.prototype.save = function () {
 	if (this.saving) {
 		clearTimeout(this.save_timer);
 		this.save_timer = setTimeout(this.save.bind(this), 250);
@@ -99,7 +99,7 @@ File.prototype.save = function () {debugger;
 	return this;
 };
 
-File.prototype.saved = function () {debugger;
+File.prototype.saved = function () {
 	delete this.saving;
 
 	this.file_dom.classList.remove('saving');
@@ -144,45 +144,60 @@ File.prototype.open = function () {
 		this.showEditor();
 	}
 
-	return this.scrollTo();
+	return this.current();
 };
 
 File.prototype.close = function () {
 	if (this.is_open) {
 		this.hideEditor();
 	
-		this.file_dom.classList.remove('open', 'current');
-		this.open_dom.classList.remove('open', 'current');
+		this.file_dom.classList.remove('open');
+		this.open_dom.classList.remove('open');
 	
 		delete this.is_open;
 
 		this.app.socket.emit('close', this.name);
 
-		var current = File.detectCurrent(this.app);
-
-		if (current) current.open();
+		this.uncurrent();
 	}
 
 	return this;
 };
 
-File.prototype.scrollTo = function () {
+File.prototype.current = function () {
+	File.current = this;
+
 	var current_list = Array.prototype.slice.call(
-		document.querySelectorAll('a.current')
+		this.app.opened_dom.querySelectorAll('.current')
 	);
 
 	current_list.forEach(function (current) {
-		current.classList.remove('current');
+		current.js_object.uncurrent();
 	});
 
 	this.file_dom.classList.add('current');
 	this.open_dom.classList.add('current');
+	this.editor_dom.classList.add('current');
 
 	this.editor_dom.parentNode.scrollTop = this.editor_dom.offsetTop;
 
 	this.focusEditor();
 
-	File.current = this;
+	return this;
+};
+
+File.prototype.uncurrent = function () {
+	this.file_dom.classList.remove('current');
+	this.open_dom.classList.remove('current');
+	this.editor_dom.classList.remove('current');
+
+	if (File.current === this) {
+		File.current = File.detectCurrent(this.app);
+
+		if (File.current) {
+			File.current.open();
+		}
+	}
 
 	return this;
 };
