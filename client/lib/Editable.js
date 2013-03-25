@@ -39,12 +39,6 @@ Editable.prototype.destroyEditor = function () {
 Editable.prototype.createEditor = function () {
 	if (this.editor || !this.item[this.dom_key]) return this;
 
-	var parent = this.item[this.dom_key].parentNode,
-	    style = this.item[this.dom_key].style;
-
-	style.width = '100%';
-	style.height = '100%';
-
 	this.editor = ace.edit(this.item[this.dom_key]);
 
 	this.editor.setTheme("ace/theme/monokai");

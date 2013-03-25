@@ -64,6 +64,7 @@ File.prototype.render = function () {
 	this.editor_dom.js_object = this;
 
 	this.file_dom.classList.add('file');
+	this.file_dom.classList.add('editor');
 
 	this.file_dom.innerHTML = this.base;
 	this.open_dom.innerHTML = this.name + '<span class="close">&#x2715;</span>';
