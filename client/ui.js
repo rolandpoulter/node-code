@@ -19,24 +19,24 @@ module.exports = function (app) {
 
 	window.onresize = resize;
 
-	app.files_width = Math.max(100, Math.min(200, Math.floor(innerWidth * 0.2)));
+	app.files_width = Math.max(100, Math.min(200, Math.floor(window.innerWidth * 0.2)));
 
 	function resize () {
 		app.emit('resize');
 
 		app.status_height = app.status_dom.clientHeight;
 		app.opened_height = app.opened_dom.clientHeight;
-		app.files_height = innerHeight - app.status_height
-		app.editors_height = (innerHeight - app.status_height) - app.opened_height;
+		app.files_height = window.innerHeight - app.status_height;
+		app.editors_height = (window.innerHeight - app.status_height) - app.opened_height;
 
 		app.opened_width =
-		app.editors_width = innerWidth - app.files_width;
+		app.editors_width = window.innerWidth - app.files_width;
 
 		app.opened_dom.style.left =
 		app.editors_dom.style.left =
 		app.files_dom.style.width = app.files_width + 'px';
 
-		app.status_dom.style.width = innerWidth + 'px';
+		app.status_dom.style.width = window.innerWidth + 'px';
 		app.opened_dom.style.width = app.opened_width + 'px';
 		app.editors_dom.style.width = app.editors_width + 'px';
 
@@ -56,7 +56,7 @@ module.exports = function (app) {
 		if (current && current.js_object) {
 			current.js_object.current();
 		}
-	};
+	}
 
 
 	app.resize_files_dom.ondblclick = function () {
