@@ -10,7 +10,7 @@ var watch = require('watch'),
 module.exports = function (app) {
 	watch.createMonitor(app.dir, {persistent: false, interval: 3005}, function (monitor) {
 		app.files = {};
-	
+
 		Object.keys(monitor.files).forEach(function (name) {
 			addFile(name);
 		});
@@ -33,7 +33,7 @@ module.exports = function (app) {
 				    ignore = false,
 				    scope = app.files,
 				    last = relative.pop();
-	
+
 				relative.forEach(function (segment) {
 					if (!dont_ignore && ignore) return;
 

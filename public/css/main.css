@@ -1,11 +1,11 @@
 body {
+    font-family: Verdana, Helvetica, sans-serif;
 	background: rgb(29, 30, 26);
 	overflow: hidden;
 	padding: 0;
 	margin: 0;
 	height: 100%;
 	width: 100%;
-	font: Verdana, Helvetica, arial;
 }
 
 body.col-resize,
@@ -13,7 +13,13 @@ body.col-resize * {
 	cursor: col-resize !important;
 }
 
-#files, #opened, #status {
+body.row-resize,
+body.row-resize * {
+	cursor: row-resize !important;
+}
+
+#files, #opened, #status,
+#resize-files, #resize-opened, #resize-status {
 	-webkit-touch-callout: none !important;
 	-webkit-user-select: none !important;
 	-khtml-user-select: none !important;
@@ -23,15 +29,30 @@ body.col-resize * {
 }
 
 #files,
-#resize-files,
 #opened,
-#resize-opened,
 #editors,
 #status,
-#resize-status,
 #overlay {
 	position: absolute;
 	overflow: auto;
+}
+
+#resize-files,
+#resize-opened,
+#resize-status {
+	position: absolute;
+	z-index: 99;
+}
+
+#resize-files {
+	width: 7px;
+	cursor: col-resize;
+}
+
+#resize-opened,
+#resize-status {
+	height: 7px;
+	cursor: row-resize;
 }
 
 #files {
@@ -41,25 +62,12 @@ body.col-resize * {
 	border-bottom: 1px solid #444;
 }
 
-#resize-files {
-	width: 7px;
-	cursor: col-resize;
-	z-index: 9;
-}
-
 #opened {
 	height: 30px;
 	background: rgb(18, 19, 16);
 }
 
-#resize-opened {
-	height: 7px;
-	cursor: row-resize;
-	z-index: 9;
-}
-
 #opened a {
-	font: Courier, monospace;
 	color: #eee;
 	cursor: pointer;
 	height: 26px;
@@ -116,7 +124,7 @@ body.col-resize * {
 #status {
 	height: 20px;
 	bottom: 0;
-	z-index: 99;
+	z-index: 98;
 	background: rgb(69, 69, 69);
 	border-top: 1px solid #000;
 }
@@ -124,7 +132,6 @@ body.col-resize * {
 #status-opened {
 	height: 7px;
 	cursor: row-resize;
-	z-index: 9;
 }
 
 #overlay {
@@ -145,7 +152,7 @@ body.col-resize * {
 	border-radius: 10px;
 	background: white;
 	position: relative;
-	z-index: 9;
+	z-index: 100;
 	padding: 10px;
 	opacity: 0.5;
 	margin: 10px;
@@ -182,16 +189,20 @@ body.col-resize * {
 }
 
 .tree a {
+    cursor: pointer;
 	margin: 2px 0;
-	padding: 0 0 0 4px; 
-	cursor: pointer;
-	display: block;
+    padding: 0 0 0 4px; 
+    display: block;
+    font-size: 0.8em;
 	line-height: 1.5em;
+    text-indent: 24px;
+    background-position: 4px center;
+    background-repeat: no-repeat;
 }
 
 .tree a:hover {
 	text-decoration: underline;
-	background: #eee;
+	background-color: #eee;
 }
 
 .tree a.directory {
@@ -199,9 +210,21 @@ body.col-resize * {
 	margin-left: -1em;
 }
 
+.tree a.directory {
+    background-image: url(/img/icon/folder-open.png);
+}
+
 .tree.collapse .tree,
 .tree.collapse a.file {
 	display: none;
+}
+
+.tree.collapse a.directory {
+    background-image: url(/img/icon/folder.png);
+}
+
+.tree a.file {
+    background-image: url(/img/icon/text-x-generic.png);
 }
 
 .tree a.file.open {}
@@ -212,7 +235,7 @@ body.col-resize * {
 
 .tree a.selected {
 	color: white;
-	background: #777;
+	background-color: #777;
 }
 
 .tree a.current {

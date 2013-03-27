@@ -18,6 +18,7 @@ require('./helpers').mixinStore(File);
 
 
 File.detectCurrent = function (app) {
+    return File.current;
 	var location = app.editors_dom.scrollTop,
 	    children = Array.prototype.slice.call(app.editors_dom.childNodes),
 	    current = document.querySelector('a.current');
@@ -101,6 +102,8 @@ File.prototype.save = function () {
 
 File.prototype.saved = function () {
 	delete this.saving;
+
+	this.data = this.getEditorValue();
 
 	this.file_dom.classList.remove('saving');
 	this.open_dom.classList.remove('saving');
@@ -193,19 +196,21 @@ File.prototype.close = function () {
 };
 
 File.prototype.current = function () {
-	File.current = this;
+    if (File.current !== this) {
+	    File.current = this;
 
-	var current_list = Array.prototype.slice.call(
-		this.app.opened_dom.querySelectorAll('.current')
-	);
+	    var current_list = Array.prototype.slice.call(
+		    this.app.opened_dom.querySelectorAll('.current')
+	    );
 
-	current_list.forEach(function (current) {
-		current.js_object.uncurrent();
-	});
+	    current_list.forEach(function (current) {
+		    current.js_object.uncurrent();
+	    });
 
-	this.file_dom.classList.add('current');
-	this.open_dom.classList.add('current');
-	this.editor_dom.classList.add('current');
+	    this.file_dom.classList.add('current');
+	    this.open_dom.classList.add('current');
+	    this.editor_dom.classList.add('current');
+    }
 
 	this.editor_dom.parentNode.scrollTop = this.editor_dom.offsetTop;
 
@@ -215,9 +220,9 @@ File.prototype.current = function () {
 };
 
 File.prototype.uncurrent = function () {
-	this.file_dom.classList.remove('current');
-	this.open_dom.classList.remove('current');
-	this.editor_dom.classList.remove('current');
+    this.file_dom.classList.remove('current');
+    this.open_dom.classList.remove('current');
+    this.editor_dom.classList.remove('current');
 
 	if (File.current === this) {
 		File.current = File.detectCurrent(this.app);
