@@ -14,10 +14,10 @@ var path_sep = '/';
 module.exports = File;
 
 
-require('./helpers').mixinStore(File);
+require('./helpers').mixin_store(File);
 
 
-File.detectCurrent = function (app) {
+File.detect_current = function (app) {
     return File.current;
 	var location = app.editors_dom.scrollTop,
 	    children = Array.prototype.slice.call(app.editors_dom.childNodes),
@@ -95,7 +95,7 @@ File.prototype.save = function () {
 	this.file_dom.classList.add('saving');
 	this.open_dom.classList.add('saving');
 
-	this.app.socket.emit('write file', this.name, this.getEditorValue());
+	this.app.socket.emit('write file', this.name, this.get_editor_value());
 
 	return this;
 };
@@ -103,7 +103,7 @@ File.prototype.save = function () {
 File.prototype.saved = function () {
 	delete this.saving;
 
-	this.data = this.getEditorValue();
+	this.data = this.get_editor_value();
 
 	this.file_dom.classList.remove('saving');
 	this.open_dom.classList.remove('saving');
@@ -115,7 +115,7 @@ File.prototype.saved = function () {
 
 File.prototype.read = function (data) {
 	this.data = data;
-	this.setEditorValue(data)
+	this.set_editor_value(data)
 
 	new Notification({message: this.name + ' loaded'}).render();
 
@@ -145,7 +145,7 @@ File.prototype.open = function () {
 
 		this.revert();
 
-		this.createEditor();
+		this.create_editor();
 	}
 
 	return this.current();
@@ -155,7 +155,7 @@ File.prototype.close = function () {
 	var file = this;
 
 	if (this.is_open) {
-		if (this.data !== this.getEditorValue()) {
+		if (this.data !== this.get_editor_value()) {
 			new Dialog({
 				modal: true,
 				header: 'Close file with unsaved changes?',
@@ -180,7 +180,7 @@ File.prototype.close = function () {
 	}
 
 	function doClose () {
-		file.destroyEditor();
+		file.destroy_editor();
 	
 		file.file_dom.classList.remove('open');
 		file.open_dom.classList.remove('open');
@@ -196,36 +196,36 @@ File.prototype.close = function () {
 };
 
 File.prototype.current = function () {
-    if (File.current !== this) {
-	    File.current = this;
+	if (File.current !== this) {
+		File.current = this;
 
-	    var current_list = Array.prototype.slice.call(
-		    this.app.opened_dom.querySelectorAll('.current')
-	    );
+		var current_list = Array.prototype.slice.call(
+			this.app.opened_dom.querySelectorAll('.current')
+		);
 
-	    current_list.forEach(function (current) {
-		    current.js_object.uncurrent();
-	    });
+		current_list.forEach(function (current) {
+			current.js_object.uncurrent();
+		});
 
-	    this.file_dom.classList.add('current');
-	    this.open_dom.classList.add('current');
-	    this.editor_dom.classList.add('current');
-    }
+		this.file_dom.classList.add('current');
+		this.open_dom.classList.add('current');
+		this.editor_dom.classList.add('current');
+	}
 
 	this.editor_dom.parentNode.scrollTop = this.editor_dom.offsetTop;
 
-	this.focusEditor();
+	this.focus_editor();
 
 	return this;
 };
 
 File.prototype.uncurrent = function () {
-    this.file_dom.classList.remove('current');
-    this.open_dom.classList.remove('current');
-    this.editor_dom.classList.remove('current');
+	this.file_dom.classList.remove('current');
+	this.open_dom.classList.remove('current');
+	this.editor_dom.classList.remove('current');
 
 	if (File.current === this) {
-		File.current = File.detectCurrent(this.app);
+		File.current = File.detect_current(this.app);
 
 		if (File.current !== this) {
 			File.current.open();
@@ -275,7 +275,7 @@ File.prototype.removed = function () {
 File.prototype.remove = function () {
 	File.set(undefined, this.name, this.app);
 
-	this.destroyEditor();
+	this.destroy_editor();
 
 	this.file_dom.parentNode.removeChild(this.file_dom);
 	this.open_dom.parentNode.removeChild(this.open_dom);

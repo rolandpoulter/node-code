@@ -16,12 +16,12 @@ var File = require('./File');
 module.exports = Directory;
 
 
-Directory.createFromList = function (files, app) {
-	return new Directory('', null, app).createFromList(files);
+Directory.create_from_list = function (files, app) {
+	return new Directory('', null, app).create_from_list(files);
 };
 
 
-require('./helpers').mixinStore(Directory, 'dirs');
+require('./helpers').mixin_store(Directory, 'dirs');
 
 
 function Directory (name, parent, app) {
@@ -64,10 +64,10 @@ Directory.prototype.render = function () {
 		this.tree_dom.appendChild(this.file_dom);
 	}
 
-	return this.renderChildren();
+	return this.render_children();
 };
 
-Directory.prototype.renderChildren = function () {
+Directory.prototype.render_children = function () {
 	var that = this,
 	    directories = [],
 	    files = [];
@@ -94,7 +94,7 @@ Directory.prototype.renderChildren = function () {
 	return this;
 };
 
-Directory.prototype.createFromList = function (list, app) {
+Directory.prototype.create_from_list = function (list, app) {
 	app = app || this.app;
 
 	var parent = this,
@@ -118,20 +118,20 @@ Directory.prototype.createFromList = function (list, app) {
 		var type = typeof list[key];
 
 		if (type === 'string') {
-			parent.createFile(list[key], parent, app);
+			parent.create_file(list[key], parent, app);
 
 		} else if (type === 'object' && list[key])  {
 			var fullname = (name ? name + path_sep : '') + key,
-			    directory = parent.createDirectory(fullname, parent, app);
+			    directory = parent.create_directory(fullname, parent, app);
 
-			directory.createFromList(list[key]);
+			directory.create_from_list(list[key]);
 		}
 	});
 
 	return this;
 };
 
-Directory.prototype.createDirectory = function (name, parent, app) {
+Directory.prototype.create_directory = function (name, parent, app) {
 	app = app || this.app;
 
 	var segments = name.split(path_sep),
@@ -152,7 +152,7 @@ Directory.prototype.createDirectory = function (name, parent, app) {
 	return segments.pop();
 };
 
-Directory.prototype.createFile = function (name, parent, app) {
+Directory.prototype.create_file = function (name, parent, app) {
 	app = app || this.app;
 
 	var segments = name.split(path_sep),
@@ -160,7 +160,7 @@ Directory.prototype.createFile = function (name, parent, app) {
 
 	if (!parent) {
 		parent = segments.length ?
-			this.root.createDirectory(segments.join(path_sep), parent, app) :
+			this.root.create_directory(segments.join(path_sep), parent, app) :
 			this.root;
 	}
 
@@ -181,7 +181,7 @@ Directory.prototype.unselect = function () {
 	return this;
 };
 
-Directory.prototype.openFileList = function (list) {
+Directory.prototype.open_file_list = function (list) {
 	var app = this.app;
 
 	list.forEach(function (name) {
@@ -226,10 +226,10 @@ Directory.prototype.remove = function () {
 		this.file_dom.parentNode.removeChild(this.file_dom);
 	}
 
-	return this.removeChildren();
+	return this.remove_children();
 };
 
-Directory.prototype.removeChildren = function () {
+Directory.prototype.remove_children = function () {
 	var that = this;
 
 	Object.keys(this.children).forEach(function (key) {

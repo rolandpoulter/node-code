@@ -4,5 +4,6 @@
 module.exports = ContextMenu;
 
 
-function ContextMenu () {
+function ContextMenu (options) {
+	this.options = options;
 }

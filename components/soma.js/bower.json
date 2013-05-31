@@ -1,0 +1,15 @@
+{
+  "name": "soma.js",
+  "version": "2.0.1",
+  "main": "./build/soma.js",
+  "dependencies": {},
+  "gitHead": "c66ed6e48e03cf739fba34809cc64886ada6554a",
+  "readme": "## Information\n\nsoma.js is a scalable javascript framework created to help developers to write loosely-coupled applications to increase scalability and maintainability.\n\n[http://somajs.github.com/somajs/](http://somajs.github.com/somajs/)\n\n## License\n\nCopyright (c) | 2012 | soma.js | Romuald Quantin | Henry Schmieder | www.soundstep.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation\nfiles (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy,\nmodify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software\nis furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES\nOF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\nLIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR\nIN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+  "readmeFilename": "README.md",
+  "_id": "soma.js@2.0.1",
+  "description": "soma.js is a scalable javascript framework created to help developers to write loosely-coupled applications to increase scalability and maintainability.",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/somajs/somajs.git"
+  }
+}

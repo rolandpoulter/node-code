@@ -1,20 +1,32 @@
 "use strict";
 
 
-var Notification = require('./lib/Notification'),
-    Directory = require('./lib/Directory'),
-    Dialog = require('./lib/Dialog'),
-    File = require('./lib/File');
+//var Notification = require('./lib/Notification'),
+//    Directory = require('./lib/Directory'),
+//    Dialog = require('./lib/Dialog'),
+//    File = require('./lib/File');
+var directory = require('./messages/directory'),
+    project = require('./messages/project'),
+    session = require('./messages/session'),
+    file = require('./messages/file');
 
 
 module.exports = function (app) {
+	project(app, app.socket);
+
+	directory(app, app.socket);
+	file(app, app.socket);
+
+	session(app, app.socket);
+
+	/*
 	app.socket.on('list files', function (files) {
 		var existed = !!app.directory;
 
 		if (existed) return;
 		//if (existed) app.directory.remove();
 
-		app.directory = Directory.createFromList(files, app).render();
+		app.directory = Directory.create_from_list(files, app).render();
 
 		//if (!existed) app.emit('directory ready');
 	});
@@ -27,19 +39,19 @@ module.exports = function (app) {
 
 	app.socket.on('list opened', function (opened) {
 		onceDirectoryReady(function () {
-			app.directory.openFileList(opened);
+			app.directory.open_file_list(opened);
 		});
 	});
 
 	app.socket.on('dir created', function (name) {
 		onceDirectoryReady(function () {
-			app.directory.createDirectory(name);
+			app.directory.create_directory(name);
 		});
 	});
 
 	app.socket.on('file created', function (name) {
 		onceDirectoryReady(function () {
-			app.directory.createFile(name);
+			app.directory.create_file(name);
 		});
 	});
 
@@ -83,4 +95,5 @@ module.exports = function (app) {
 			]
 		}).render();
 	});
+	*/
 };

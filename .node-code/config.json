@@ -1,0 +1,13 @@
+{
+	ignore: [
+		'.c9revisions/',
+		'.settings',
+		'.DS_Store'
+	],
+	avoid: [
+		'.*/',
+		'node_modules/'
+	],
+	client: {},
+	plugins: []
+}

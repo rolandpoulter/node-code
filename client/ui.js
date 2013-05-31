@@ -6,14 +6,18 @@ var Notification = require('./lib/Notification'),
 
 
 module.exports = function (app) {
+	require('./ui/status')(app);
+	require('./ui/opened')(app);
+	require('./ui/files')(app);
+
 	setTimeout(function () {
 		new Notification({message: 'Welcome to node code.'}).render();
 	}, 500);
 
 
-	window.onbeforeunload = function (event) {
-		return 'Are you sure you want to exit this session?';
-	};
+	// window.onbeforeunload = function (event) {
+		// return 'Are you sure you want to exit this session?';
+	// };
 
 
 	setTimeout(resize, 50);

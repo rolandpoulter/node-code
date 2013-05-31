@@ -28,7 +28,7 @@ function Editable (item, dom_key) {
 }
 
 
-Editable.prototype.destroyEditor = function () {
+Editable.prototype.destroy_editor = function () {
 	if (this.editor) {
 		this.editor.destroy();
 
@@ -41,7 +41,7 @@ Editable.prototype.destroyEditor = function () {
 	return this;
 };
 
-Editable.prototype.createEditor = function () {
+Editable.prototype.create_editor = function () {
 	if (this.editor || !this.item[this.dom_key]) return this;
 
 	this.editor = ace.edit(this.item[this.dom_key]);
@@ -49,6 +49,10 @@ Editable.prototype.createEditor = function () {
 	this.editor.setTheme("ace/theme/monokai");
 
 	this.editor_session = this.editor.getSession();
+
+	this.editor.setShowInvisibles(true);
+	this.editor_session.setTabSize(2);
+	this.editor_session.setUseSoftTabs(false);
 
 	this.editor_session.setMode(
 		Editable.ext_map[this.item.ext] || 'ace/mode/text'
@@ -64,7 +68,7 @@ Editable.prototype.createEditor = function () {
 	return this;
 };
 
-Editable.prototype.setEditorValue = function (data) {
+Editable.prototype.set_editor_value = function (data) {
 	this.editor.setValue(data);
 	this.editor.clearSelection();
 
@@ -73,11 +77,11 @@ Editable.prototype.setEditorValue = function (data) {
 	return this;
 };
 
-Editable.prototype.getEditorValue = function () {
+Editable.prototype.get_editor_value = function () {
 	return this.editor.getValue();
 };
 
-Editable.prototype.focusEditor = function () {
+Editable.prototype.focus_editor = function () {
 	this.editor.focus();
 
 	return this;

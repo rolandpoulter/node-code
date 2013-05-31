@@ -1,12 +1,34 @@
 "use strict";
 
 
-var path = require('path'),
-    fs = require('fs');
+//var path = require('path'),
+//    fs = require('fs');
+
+
+var directory = require('./messages/directory'),
+    project = require('./messages/project'),
+    session = require('./messages/session'),
+    file = require('./messages/file');
 
 
 module.exports = function (app) {
+	app.io.configure(function () {
+		app.io.set('authorization', function (data, accept) {
+			session.authorize(app, data, accept);
+		});
+	});
+
 	app.io.sockets.on('connection', function (socket) {
+		var socket_session = socket.handshake.session;
+
+		project(app, socket, socket_session);
+
+		directory(app, socket, socket_session);
+		file(app, socket, socket_session);
+
+		session(app, socket, socket_session);
+
+		/*
 		if (app.monitor) {
 			sendFiles();
 		} else {
@@ -31,7 +53,7 @@ module.exports = function (app) {
 		});
 
 		app.on('unknown created', function (name) {
-			socket.emit('unknown created', name)
+			socket.emit('unknown created', name);
 		});
 
 		app.on('dir changed', function (name) {
@@ -51,7 +73,7 @@ module.exports = function (app) {
 		});
 
 		app.on('unknown changed', function (name) {
-			socket.emit('unknown changed', name)
+			socket.emit('unknown changed', name);
 		});
 
 		app.on('dir removed', function (name) {
@@ -154,5 +176,6 @@ module.exports = function (app) {
 		function getAbsolute (name) {
 			return app.dir + path.sep + name;
 		}
+		*/
 	});
 };
