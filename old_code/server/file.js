@@ -1,7 +1,7 @@
 "use strict";
 
 
-var cached_path_entity = require('./helpers').cached_path_entity;
+var helpers = require('./helpers');
 
 
 module.exports = File;
@@ -10,7 +10,7 @@ module.exports = File;
 File.cache = {};
 
 function File (path_location, relative_path) {
-	return cached_path_entity(this, path_location, relative_path, File.cache);
+	return helpers.cached_path_entity(this, path_location, relative_path, File.cache);
 }
 
 

@@ -1,7 +1,8 @@
 "use strict";
 
 
-var path = require('path');
+var Project = require('../lib/project'),
+    path = require('path');
 
 
 exports.cached_path_entity = function (entity, path_location, relative_path, cache) {
@@ -14,20 +15,27 @@ exports.cached_path_entity = function (entity, path_location, relative_path, cac
 		return cache[entity.absolute_path];
 	}
 
-	return cache[entity.absolute_path] = this;
+	return cache[entity.absolute_path] = entity;
 };
 
 
 exports.entity_message_handler = function (socket, session, get_entity_method) {
+	// TODO: session no needed, but Project should be passed in
 	var slice = Array.prototype.slice;
 
 	function entity_message_handler_binder (procedure, relative_project_path, relative_entity_path) {
+		// var Project = require('./project');
+		console.log(Project);
+		console.log('project_cache: ', Project.relative_cache);
+		console.log('project: ', relative_project_path, ', ', relative_entity_path);
 		var emit_message = this,
-		    project = session.projects[relative_project_path],
+		    project = Project.relative_cache[relative_project_path],
 		    entity = project,
 		    args = slice.call(arguments, 2);
 
-		console.log(project, project[get_entity_method]);
+		console.log(project);console.log(project, project[get_entity_method]);
+
+
 
 		if (get_entity_method) {
 		 entity = project[get_entity_method](relative_entity_path)

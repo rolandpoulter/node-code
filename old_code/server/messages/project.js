@@ -1,7 +1,7 @@
 "use strict";
 
 
-var Project = require('../lib/Project');
+var Project = require('../lib/project');
 
 
 var entity_message_handler = require('../lib/helpers').entity_message_handler;

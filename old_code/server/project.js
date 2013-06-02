@@ -1,14 +1,19 @@
 "use strict";
 
 
-var cached_path_entity = require('./helpers').cached_path_entity;
+var helpers = require('./helpers');
 
 
 var Directory = require('./Directory'),
     File = require('./File');
 
 
+// HACK
+if (global.Project) return module.exports = global.Project;
+
 module.exports = Project;
+
+global.Project = Project;
 
 
 Project.load_session = function (app, session, callback) {
@@ -31,6 +36,9 @@ Project.upsert = function (app, relative_project_path, projects_session_store, c
 
 Project.cache = {};
 
+Project.relative_cache = {};console.log("GOT HERE");
+
+
 function Project (path_location, relative_path, projects_session_store, configuration) {
 	this.directory = new Directory(path_location, relative_path);
 
@@ -41,9 +49,14 @@ function Project (path_location, relative_path, projects_session_store, configur
 		this.directory.project = this;
 	}
 
-	var project = cached_path_entity(this, path_location, relative_path, Project.cache);
+	var project = helpers.cached_path_entity(this, path_location, relative_path, Project.cache);
 
 	projects_session_store[this.relative_path] = this.get_info();
+
+	Project.relative_cache[this.relative_path] = this;
+
+	console.log('add project: ', this.relative_path, Project.relative_cache);
+	console.log(Project);
 
 	return project;
 }
