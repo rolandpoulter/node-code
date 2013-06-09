@@ -1,7 +1,6 @@
 {
   "dependencies": {
   	"ace": "0.2.x",
-    "soma.js": "2.0.x",
     "mousetrap": "1.4.x"
   }
 }
