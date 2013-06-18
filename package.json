@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 
 	"scripts": {
-		"start": "node server.js"
+		"start": "./bin/node-code"
 	},
 
 	"dependencies": {
@@ -11,8 +11,11 @@
 		"socket.io": "0.9.x",
 		"commander": "1.1.x",
 		"express": "3.2.x",
-		"watch": "0.7.x",
 		"async": "0.2.x",
 		"bower": "0.9.x"
+	},
+
+	"devDependencies": {
+		"gaze": "0.3.x"
 	}
 }
