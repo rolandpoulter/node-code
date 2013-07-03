@@ -1,6 +1,6 @@
 {
   "dependencies": {
-  	"ace": "0.2.x",
+  	"ace": "ajaxorg/ace-builds",
     "mousetrap": "1.4.x"
   }
 }
