@@ -20,6 +20,8 @@ open source, cross platform, runs in a browser, as good as vim/emacs/sublime/clo
 * √ save file
 * √ watch files for changes
 * √ detect language by file type
+* √ improve pub/sub architecture on server
+* improve pub/sub architecture on client
 * context menus
 * create/remove/copy/move files/folders
 * select multiple files/folders
@@ -30,7 +32,8 @@ open source, cross platform, runs in a browser, as good as vim/emacs/sublime/clo
 * highlight directory changes
 * tab navigation
 * quick view file
-* fix session bug
+* add/remove project
+* √ fix session bug
 
 * remove old code
 * create easy install script
@@ -40,7 +43,6 @@ open source, cross platform, runs in a browser, as good as vim/emacs/sublime/clo
 * migrate todos to github page
 * RELEASE as Gaius (Baltar)
 
-* add/remove project
 * add theme manager
 * support windows
 * create stand alone desktop app/server for ubuntu/mac/windows
