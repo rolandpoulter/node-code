@@ -15,7 +15,7 @@ open source, cross platform, runs in a browser, as good as vim/emacs/sublime/clo
 * open http://localhost:3617
 
 
-# TODO
+# TODO - high priority (first release)
 
 * √ save file
 * √ watch files for changes
@@ -34,7 +34,7 @@ open source, cross platform, runs in a browser, as good as vim/emacs/sublime/clo
 * quick view file
 * add/remove project
 * √ fix session bug
-
+* remove factory pattern (inheritance is the lesser of two evils)
 * remove old code
 * create easy install script
 * create gaius github account/project
@@ -42,6 +42,8 @@ open source, cross platform, runs in a browser, as good as vim/emacs/sublime/clo
 * create marketing website and host on github
 * migrate todos to github page
 * RELEASE as Gaius (Baltar)
+
+# TODO - low priority (future release)
 
 * add theme manager
 * support windows
@@ -76,7 +78,7 @@ open source, cross platform, runs in a browser, as good as vim/emacs/sublime/clo
 * add markdown preview plugin
 
 
-# Proprietary features TODO
+# TODO - dream features (proprietary release)
 
 * add 3d editor plugin (lite blender, three.js)
 * add 2d editor plugin (lite photoshop)
