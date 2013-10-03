@@ -21,7 +21,9 @@ open source, cross platform, runs in a browser, as good as vim/emacs/sublime/clo
 * √ watch files for changes
 * √ detect language by file type
 * √ improve pub/sub architecture on server
-* improve pub/sub architecture on client
+* √ improve pub/sub architecture on client
+* √ fix session bug
+* √ better dependency management
 * context menus
 * create/remove/copy/move files/folders
 * select multiple files/folders
@@ -33,8 +35,7 @@ open source, cross platform, runs in a browser, as good as vim/emacs/sublime/clo
 * tab navigation
 * quick view file
 * add/remove project
-* √ fix session bug
-* remove factory pattern (inheritance is the lesser of two evils)
+* fix window.Project hack in client/project
 * remove old code
 * create easy install script
 * create gaius github account/project
