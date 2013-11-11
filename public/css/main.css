@@ -8,70 +8,19 @@ body {
 	width: 100%;
 }
 
-body.col-resize,
-body.col-resize * {
-	cursor: col-resize !important;
-}
-
-body.row-resize,
-body.row-resize * {
-	cursor: row-resize !important;
-}
-
-.app .shelf,
-.app .tabs,
-.app .status-bar,
-.app .shelf-resize-handle,
-.app .tabs-resize-handle,
-.app .status-bar-resize-handle {
-	-webkit-touch-callout: none !important;
-	-webkit-user-select: none !important;
-	-khtml-user-select: none !important;
-	-moz-user-select: none !important;
-	-ms-user-select: none !important;
-	user-select: none !important;
-}
-
-.app .shelf,
-.app .tabs,
-.app .editor-container,
-.app .status-bar,
-.app .overlay {
-	position: absolute;
-	overflow: auto;
-}
-
-.app .shelf-resize-handle,
-.app .tabs-resize-handle,
-.app .status-bar-resize-handle {
-	position: absolute;
-	z-index: 99;
-}
-
-.app .shelf-resize-handle {
-	width: 7px;
-	cursor: col-resize;
-}
-
-.app .tabs-resize-handle,
-.app .status-bar-resize-handle {
-	height: 7px;
-	cursor: row-resize;
-}
-
-.app .shelf {
+#app #shelf {
 	color: #444;
 	background: #ccc;
 	border-right: 1px solid #444;
 	border-bottom: 1px solid #444;
 }
 
-.app .tabs {
+#app #tabs {
 	height: 30px;
 	background: rgb(18, 19, 16);
 }
 
-.app .tabs a {
+#app #tabs a {
 	color: #eee;
 	cursor: pointer;
 	height: 26px;
@@ -84,7 +33,7 @@ body.row-resize * {
 	border-radius: 5px;
 }
 
-.app .tabs a span.close {
+#app #tabs a span.close {
 	color: red;
 	width: 20px;
 	height: 20px;
@@ -97,35 +46,35 @@ body.row-resize * {
 	border-radius: 5px;
 }
 
-.app .tabs a span.close:hover {
+#app #tabs a span.close:hover {
 	background: red;
 	color: white;
 }
 
-.app .tabs a.open {
+#app #tabs a.open {
 	display: inline-block;
 }
 
-.app .tabs a.saving {
+.app #tabs a.saving {
 	text-decoration: underline;
 }
 
-.app .tabs a.current {
+.app #tabs a.current {
 	background: rgb(29, 30, 26);
 }
 
-.app .editor-container {
+.app #editor_container {
 	border-top: 1px solid #000;
 	overflow: hidden;
 }
 
-.app .editor-container .editor {
+#app #editor_container .editor {
 	position: relative;
 	height: 100%;
 	width: 100%;
 }
 
-.app .status-bar {
+#app #status_bar {
 	height: 20px;
 	bottom: 0;
 	z-index: 98;
@@ -133,12 +82,7 @@ body.row-resize * {
 	border-top: 1px solid #000;
 }
 
-.app .status-bar-opened {
-	height: 7px;
-	cursor: row-resize;
-}
-
-.app .overlay {
+#app .overlay {
 	top: 0;
 	width: 100%;
 	height: 0;
@@ -146,7 +90,7 @@ body.row-resize * {
 	overflow: visible;
 }
 
-.app .overlay.modal {
+#app .overlay.modal {
 	height: 100%;
 	overflow: hidden;
 	background: rgba(0, 0, 0, 0.25);
