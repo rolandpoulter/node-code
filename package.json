@@ -33,6 +33,7 @@
 		"async": "0.2.x",
 		"bower": "1.0.x",
 		"nedb": "0.8.x",
+		"uuid": "1.4.x",
 		"ecs": "0.0.x"
 	},
 	"devDependencies": {
